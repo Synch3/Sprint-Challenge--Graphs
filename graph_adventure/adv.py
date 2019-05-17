@@ -28,10 +28,35 @@ exits = player.currentRoom.getExits()
 
 visited[player.currentRoom.id] = {exits[i]: '?' for i in range(0, len(exits))}
 
+back = []
+
 while len(visited) < len(roomGraph) -1:
     if player.currentRoom.id not in visited:
         exits = player.currentRoom.getExits()
         visited[player.currentRoom.id] = {exits[i]: '?' for i in range(0, len(exits))}
+        visited[player.currentRoom.id][back[-1]] = player.currentRoom.getRoomInDirection(back[-1])
+    
+    currentExits = []
+    for exit, room in visited[player.currentRoom.id].items():
+        if room == '?':
+            currentExits.append(exit)
+
+    while len(currentExits) == 0 and len(back) > 0:
+        backwards = back.pop()
+        traversalPath.append(backwards)
+        player.travel(backwards)
+        newExits = []
+        for exit, room in visited[player.currentRoom.id].items():
+            if room =='?':
+                newExits.append(exit)
+        exits = currentExits
+
+    visited[player.currentRoom.id][currentExits[-1]] = player.currentRoom.getRoomInDirection(currentExits[-1])
+    move = currentExits.pop()
+    traversalPath.append(move)
+    opposites = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
+    back.append(opposites[move])
+    player.travel(move)
 
 # TRAVERSAL TEST
 visited_rooms = set()

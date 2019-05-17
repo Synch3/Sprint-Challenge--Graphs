@@ -49,7 +49,7 @@ while len(visited) < len(roomGraph) -1:
         for exit, room in visited[player.currentRoom.id].items():
             if room =='?':
                 newExits.append(exit)
-        exits = currentExits
+        currentExits = newExits
 
     visited[player.currentRoom.id][currentExits[-1]] = player.currentRoom.getRoomInDirection(currentExits[-1])
     move = currentExits.pop()

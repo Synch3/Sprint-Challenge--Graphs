@@ -17,12 +17,21 @@ roomGraph={494: [(1, 8), {'e': 457}], 492: [(1, 20), {'e': 400}], 493: [(2, 5), 
 
 world.loadGraph(roomGraph)
 world.printRooms()
-player = Player("Name", world.startingRoom)
+player = Player("Synche", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['n', 's']
+traversalPath = []
+visited = {}
 
+exits = player.currentRoom.getExits()
+
+visited[player.currentRoom.id] = {exits[i]: '?' for i in range(0, len(exits))}
+
+while len(visited) < len(roomGraph) -1:
+    if player.currentRoom.id not in visited:
+        exits = player.currentRoom.getExits()
+        visited[player.currentRoom.id] = {exits[i]: '?' for i in range(0, len(exits))}
 
 # TRAVERSAL TEST
 visited_rooms = set()
